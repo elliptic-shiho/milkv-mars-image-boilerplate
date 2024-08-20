@@ -1,0 +1,12 @@
+[submodule "opensbi"]
+	path = opensbi
+	url = https://github.com/starfive-tech/opensbi
+[submodule "u-boot"]
+	path = u-boot
+	url = https://github.com/starfive-tech/u-boot
+[submodule "Tools"]
+	path = Tools
+	url = https://github.com/starfive-tech/Tools
+[submodule "genimage"]
+	path = genimage
+	url = https://github.com/pengutronix/genimage
