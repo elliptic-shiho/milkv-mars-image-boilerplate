@@ -22,6 +22,6 @@ mcopy -i "${IMGPATH}" "${BASEDIR}/vf2_uEnv.txt" ::vf2_uEnv.txt
 
 ROOTPATH="$(mktemp -d)"
 TMPPATH="$(mktemp -d)"
-./genimage/genimage --config "${BASEDIR}/genimage.cfg" --outputpath "${BASEDIR}" --rootpath "$ROOTPATH" --tmppath "$TMPPATH" --inputpath "${BASEDIR}"
+${BASEDIR}/genimage/genimage --config "${BASEDIR}/genimage.cfg" --outputpath "${BASEDIR}" --rootpath "$ROOTPATH" --tmppath "$TMPPATH" --inputpath "${BASEDIR}"
 rm -rf "$ROOTPATH"
 rm -rf "$TMPPATH"
