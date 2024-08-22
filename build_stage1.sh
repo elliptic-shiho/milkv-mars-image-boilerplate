@@ -10,7 +10,7 @@ if [ ! -d "${WORKDIR}" ]; then
 fi
 
 export ARCH=riscv
-export CROSS_COMPILE=riscv64-unknown-elf-
+export CROSS_COMPILE=riscv64-linux-gnu-
 
 # Build u-boot
 cd "${BASEDIR}/u-boot"
