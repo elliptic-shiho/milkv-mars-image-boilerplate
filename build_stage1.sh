@@ -1,5 +1,6 @@
 #!/bin/sh
 # SPDX-License-Identifier: MIT
+set -e
 
 SELF="$(realpath $0)"
 BASEDIR="$(dirname ${SELF})"
@@ -9,13 +10,25 @@ if [ ! -d "${WORKDIR}" ]; then
     /bin/mkdir "${WORKDIR}"
 fi
 
+# Patching u-boot (macOS only)
+if [ "`uname`" == "Darwin" ]; then 
+  if [ ! -f "${BASEDIR}/u-boot/.patched" ]; then
+    cd "${BASEDIR}/u-boot"
+    patch -p1 < ../u-boot-mac.patch
+    touch .patched
+  fi
+  export NCPU=`sysctl -n hw.ncpu`
+else
+  export NCPU=`nproc`
+fi
+
 export ARCH=riscv
-export CROSS_COMPILE=riscv64-linux-gnu-
+export CROSS_COMPILE=riscv64-linux-
 
 # Build u-boot
 cd "${BASEDIR}/u-boot"
 make starfive_visionfive2_defconfig
-make -j`nproc`
+make -j"$NCPU"
 
 # Make SPL image
 cd "${BASEDIR}/Tools/spl_tool"
@@ -24,7 +37,7 @@ make
 
 # Build OpenSBI
 cd "${BASEDIR}/opensbi"
-PLATFORM=generic FW_PAYLOAD_PATH="${BASEDIR}/u-boot/u-boot.bin" FW_FDT_PATH="${BASEDIR}/u-boot/arch/riscv/dts/starfive_visionfive2.dtb" FW_TEXT_START=0x40000000 make -j`nproc`
+PLATFORM=generic FW_PAYLOAD_PATH="${BASEDIR}/u-boot/u-boot.bin" FW_FDT_PATH="${BASEDIR}/u-boot/arch/riscv/dts/starfive_visionfive2.dtb" FW_TEXT_START=0x40000000 make -j"$NCPU"
 
 
 cp "${BASEDIR}/Tools/uboot_its/visionfive2-uboot-fit-image.its" "${WORKDIR}"
