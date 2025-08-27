@@ -21,22 +21,25 @@
         devShells = {
           default = pkg.mkShell {
             buildInputs = [
+              pkg.pkg-config
               pkg.mtools
               pkg.dosfstools
               pkg.openssl
               pkg.gcc
               pkg.autoconf
               pkg.automake
+              pkg.libtool
               pkg.libconfuse
+              pkg.intltool
               pkg_riscv64.gcc
             ];
 
-          shellHook = ''
-            rustup update
-            rustup target add riscv64gc-unknown-none-elf
-            export PS1='\e[37m`LANG=C date`\e[0m \e[1;4m\w\e[0m\n(Milk-V Building Shell) > '
-            echo " === Building shell ==="
-          '';
+            pure = true;
+
+            shellHook = ''
+              export PS1='\e[37m`LANG=C date`\e[0m \e[1;4m\w\e[0m\n(Milk-V Building Shell) > '
+              echo " === Building shell ==="
+            '';
           };
         };
       }
