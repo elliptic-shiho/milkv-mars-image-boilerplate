@@ -1,0 +1,39 @@
+diff --git a/config.c b/config.c
+index 431cac9..fd0780a 100644
+--- a/config.c
++++ b/config.c
+@@ -259,7 +259,7 @@ static char *abspath(const char *path)
+ 	if (*path == '/')
+ 		return strdup(path);
+ 
+-	xasprintf(&p, "%s/%s", get_current_dir_name(), path);
++	xasprintf(&p, "%s/%s", getcwd(NULL, 0), path);
+ 
+ 	return p;
+ }
+diff --git a/image-rauc.c b/image-rauc.c
+index 8f405e4..e68f0cd 100644
+--- a/image-rauc.c
++++ b/image-rauc.c
+@@ -97,7 +97,7 @@ static int rauc_generate(struct image *image)
+ 		}
+ 
+ 		/* create parent directories if target needs it */
+-		path = strdupa(target);
++		path = strdup(target);
+ 		tmp = strrchr(path, '/');
+ 		if (tmp) {
+ 			*tmp = '\0';
+diff --git a/image-vfat.c b/image-vfat.c
+index d3735de..60d64ea 100644
+--- a/image-vfat.c
++++ b/image-vfat.c
+@@ -47,7 +47,7 @@ static int vfat_generate(struct image *image)
+ 		struct image *child = image_get(part->image);
+ 		const char *file = imageoutfile(child);
+ 		const char *target = part->name;
+-		char *path = strdupa(target);
++		char *path = strdup(target);
+ 		char *next = path;
+ 
+ 		while ((next = strchr(next, '/')) != NULL) {

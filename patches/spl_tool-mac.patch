@@ -1,0 +1,13 @@
+diff --git a/spl_tool/spl_tool.c b/spl_tool/spl_tool.c
+index 039e520..ed914a2 100644
+--- a/spl_tool/spl_tool.c
++++ b/spl_tool/spl_tool.c
+@@ -10,7 +10,7 @@
+ #include <string.h>
+ #include <stdbool.h>
+ #include <unistd.h>
+-#include <endian.h>
++#include "endian.h"
+ #include <errno.h>
+ #include <limits.h>
+ 

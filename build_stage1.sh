@@ -14,8 +14,16 @@ fi
 if [ "`uname`" == "Darwin" ]; then 
   if [ ! -f "${BASEDIR}/u-boot/.patched" ]; then
     cd "${BASEDIR}/u-boot"
-    patch -p1 < ../u-boot-mac.patch
+    patch -p1 < "${BASEDIR}/patches/u-boot-mac.patch"
     touch .patched
+  fi
+  if [ ! -f "${BASEDIR}/Tools/.patched" ]; then
+    cd "${BASEDIR}/Tools"
+    patch -p1 < "${BASEDIR}/patches/spl_tool-mac.patch"
+    touch .patched
+  fi
+  if [ ! -f "${BASEDIR}/Tools/spl_tool/endian.h" ]; then
+    wget https://gist.githubusercontent.com/yinyin/2027912/raw/6b3e394dc6a37817410d66d6ba4d7cd6b8d5d03d/endian.h -O "${BASEDIR}/Tools/spl_tool/endian.h"
   fi
   export NCPU=`sysctl -n hw.ncpu`
 else
